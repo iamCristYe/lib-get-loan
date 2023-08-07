@@ -162,8 +162,9 @@ def get_nb_lib_loan_per_user(user_id, pwd):
     print(current_user_name)
     if "loanlist" in response_dict["data"]:
         for book in response_dict["data"]["loanlist"]:
-            print(book["title"], book["returndate"])
+            print(book["returndate"][:10], book["title"])
     else:
         print("当前没有借阅")
 
     # {"code":200,"data":{"..."},"desc":"操作成功"}
+    print("\n")
