@@ -46,7 +46,7 @@ def get_nb_lib_loan(user_id_list, pwd):
     current_access_token = response_dict["data"]["token"]
 
     for user_id in user_id_list:
-        time.sleep(3)
+        time.sleep(1)
         get_nb_lib_loan_per_user(user_id, pwd, current_access_token)
 
 
