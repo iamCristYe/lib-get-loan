@@ -2,7 +2,7 @@ import time
 import requests
 
 
-def get_nb_lib_loan(user_id_list, pwd):
+def get_nblib_loan(user_id_list, pwd):
     # curl 'https://opac.nblib.cn/api/tcc-opac/999/system/user/getOpenApiAccessToken' \
     # -X 'POST' \
     # -H 'Accept: application/json, text/plain, */*' \
@@ -44,12 +44,16 @@ def get_nb_lib_loan(user_id_list, pwd):
         log.write(str(response_dict) + "\n")
     current_access_token = response_dict["data"]["token"]
 
+    nblib_list = []
+
     for user_id in user_id_list:
         time.sleep(1)
-        get_nb_lib_loan_per_user(user_id, pwd, current_access_token)
+        nblib_list += get_nblib_loan_per_user(user_id, pwd, current_access_token)
+
+    return nblib_list
 
 
-def get_nb_lib_loan_per_user(user_id, pwd, current_access_token):
+def get_nblib_loan_per_user(user_id, pwd, current_access_token):
     current_user_id = user_id
 
     # curl 'https://opac.nblib.cn/api/tcc-opac/999/system/user/login' \
@@ -157,12 +161,19 @@ def get_nb_lib_loan_per_user(user_id, pwd, current_access_token):
     with open("log.txt", "a") as log:
         log.write(str(response_dict) + "\n")
 
+    nblib_user_list = []
+
     if "loanlist" in response_dict["data"]:
-        print(current_user_name, current_user_id)
+        print(
+            f"{current_user_name}({current_user_id})在宁波图书馆当前借阅{len(response_dict['data']['loanlist'])}本。"
+        )
         for book in response_dict["data"]["loanlist"]:
-            print(book["returndate"][:10], book["title"])
-        print()
+            nblib_user_list.append(
+                f"{book['returndate'][:10]} {book['title']} (宁波图书馆:{current_user_name})"
+            )
         # {"code":200,"data":{"..."},"desc":"操作成功"}
 
     else:
-        print(current_user_name, current_user_id, "当前没有借阅\n")
+        print(f"{current_user_name}({current_user_id})在宁波图书馆当前借阅0本。")
+
+    return nblib_user_list
