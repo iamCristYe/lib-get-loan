@@ -4,27 +4,26 @@ import requests
 
 def get_nb_lib_loan(user_id_list, pwd):
     # curl 'https://opac.nblib.cn/api/tcc-opac/999/system/user/getOpenApiAccessToken' \
-    #   -X 'POST' \
-    #   -H 'Accept: application/json, text/plain, */*' \
-    #   -H 'Accept-Language: zh-CN,zh;q=0.9' \
-    #   -H 'Connection: keep-alive' \
-    #   -H 'Content-Length: 0' \
-    #   -H 'DNT: 1' \
-    #   -H 'Origin: https://opac.nblib.cn' \
-    #   -H 'Sec-Fetch-Dest: empty' \
-    #   -H 'Sec-Fetch-Mode: cors' \
-    #   -H 'Sec-Fetch-Site: same-origin' \
-    #   -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36' \
-    #   -H 'sec-ch-ua: "Not/A)Brand";v="99", "Google Chrome";v="115", "Chromium";v="115"' \
-    #   -H 'sec-ch-ua-mobile: ?0' \
-    #   -H 'sec-ch-ua-platform: "Windows"' \
-    #   --compressed
+    # -X 'POST' \
+    # -H 'Accept: application/json, text/plain, */*' \
+    # -H 'Accept-Language: zh-CN,zh;q=0.9' \
+    # -H 'Connection: keep-alive' \
+    # -H 'Content-Length: 0' \
+    # -H 'DNT: 1' \
+    # -H 'Origin: https://opac.nblib.cn' \
+    # -H 'Sec-Fetch-Dest: empty' \
+    # -H 'Sec-Fetch-Mode: cors' \
+    # -H 'Sec-Fetch-Site: same-origin' \
+    # -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36' \
+    # -H 'sec-ch-ua: "Not/A)Brand";v="99", "Google Chrome";v="115", "Chromium";v="115"' \
+    # -H 'sec-ch-ua-mobile: ?0' \
+    # -H 'sec-ch-ua-platform: "Windows"' \
+    # --compressed
 
     headers = {
         "Accept": "application/json, text/plain, */*",
         "Accept-Language": "zh-CN,zh;q=0.9",
         "Connection": "keep-alive",
-        # 'Content-Length': '0',
         "DNT": "1",
         "Origin": "https://opac.nblib.cn",
         "Sec-Fetch-Dest": "empty",
@@ -42,7 +41,7 @@ def get_nb_lib_loan(user_id_list, pwd):
     )
     response_dict = response.json()
     with open("log.txt", "a") as log:
-        log.write(str(response_dict))
+        log.write(str(response_dict) + "\n")
     current_access_token = response_dict["data"]["token"]
 
     for user_id in user_id_list:
@@ -54,7 +53,7 @@ def get_nb_lib_loan_per_user(user_id, pwd, current_access_token):
     current_user_id = user_id
 
     # curl 'https://opac.nblib.cn/api/tcc-opac/999/system/user/login' \
-    # -H 'ACCESS-TOKEN: ..' \
+    # -H 'ACCESS-TOKEN: 12345678' \
     # -H 'Accept: application/json, text/plain, */*' \
     # -H 'Accept-Language: zh-CN,zh;q=0.9,ja;q=0.8,ja-JP;q=0.7,en;q=0.6' \
     # -H 'Connection: keep-alive' \
@@ -103,26 +102,26 @@ def get_nb_lib_loan_per_user(user_id, pwd, current_access_token):
     current_user_name = response_dict["data"]["realName"]
     current_opac_token = response_dict["data"]["opacToken"]
     with open("log.txt", "a") as log:
-        log.write(str(response_dict))
+        log.write(str(response_dict) + "\n")
 
     # curl 'https://opac.nblib.cn/api/tcc-open-platform/open-api/service/barcode/currentloan' \
-    #   -H 'ACCESS-TOKEN: ..' \
-    #   -H 'Accept: application/json, text/plain, */*' \
-    #   -H 'Accept-Language: zh-CN,zh;q=0.9,ja;q=0.8,ja-JP;q=0.7,en;q=0.6' \
-    #   -H 'Connection: keep-alive' \
-    #   -H 'Content-Type: application/json;charset=UTF-8' \
-    #   -H 'DNT: 1' \
-    #   -H 'OPAC-TOKEN: ..' \
-    #   -H 'Origin: https://opac.nblib.cn' \
-    #   -H 'Sec-Fetch-Dest: empty' \
-    #   -H 'Sec-Fetch-Mode: cors' \
-    #   -H 'Sec-Fetch-Site: same-origin' \
-    #   -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36' \
-    #   -H 'sec-ch-ua: "Not/A)Brand";v="99", "Google Chrome";v="115", "Chromium";v="115"' \
-    #   -H 'sec-ch-ua-mobile: ?0' \
-    #   -H 'sec-ch-ua-platform: "Windows"' \
-    #   --data-raw '{"orgId":"623217618121138176","rdid":""}' \
-    #   --compressed
+    # -H 'ACCESS-TOKEN: 12345678' \
+    # -H 'Accept: application/json, text/plain, */*' \
+    # -H 'Accept-Language: zh-CN,zh;q=0.9,ja;q=0.8,ja-JP;q=0.7,en;q=0.6' \
+    # -H 'Connection: keep-alive' \
+    # -H 'Content-Type: application/json;charset=UTF-8' \
+    # -H 'DNT: 1' \
+    # -H 'OPAC-TOKEN: 12345678' \
+    # -H 'Origin: https://opac.nblib.cn' \
+    # -H 'Sec-Fetch-Dest: empty' \
+    # -H 'Sec-Fetch-Mode: cors' \
+    # -H 'Sec-Fetch-Site: same-origin' \
+    # -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36' \
+    # -H 'sec-ch-ua: "Not/A)Brand";v="99", "Google Chrome";v="115", "Chromium";v="115"' \
+    # -H 'sec-ch-ua-mobile: ?0' \
+    # -H 'sec-ch-ua-platform: "Windows"' \
+    # --data-raw '{"orgId":"623217618121138176","rdid":""}' \
+    # --compressed
 
     headers = {
         "ACCESS-TOKEN": f"{current_access_token}",
@@ -156,14 +155,14 @@ def get_nb_lib_loan_per_user(user_id, pwd, current_access_token):
     response_dict = response.json()
     # print(response_dict["data"])
     with open("log.txt", "a") as log:
-        log.write(str(response_dict))
+        log.write(str(response_dict) + "\n")
 
-    print(current_user_name)
     if "loanlist" in response_dict["data"]:
+        print(current_user_name, current_user_id)
         for book in response_dict["data"]["loanlist"]:
             print(book["returndate"][:10], book["title"])
-    else:
-        print("当前没有借阅")
+        print()
+        # {"code":200,"data":{"..."},"desc":"操作成功"}
 
-    # {"code":200,"data":{"..."},"desc":"操作成功"}
-    print("\n")
+    else:
+        print(current_user_name, current_user_id, "当前没有借阅\n")
