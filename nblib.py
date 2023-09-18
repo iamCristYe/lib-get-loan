@@ -47,7 +47,6 @@ def get_nblib_loan(user_id_list, pwd):
     nblib_list = []
 
     for user_id in user_id_list:
-        time.sleep(1)
         nblib_list += get_nblib_loan_per_user(user_id, pwd, current_access_token)
 
     return nblib_list
@@ -165,15 +164,15 @@ def get_nblib_loan_per_user(user_id, pwd, current_access_token):
 
     if "loanlist" in response_dict["data"]:
         print(
-            f"{current_user_name}({current_user_id})在宁波图书馆当前借阅{len(response_dict['data']['loanlist'])}本。"
+            f"{current_user_id:010d}在宁波图书馆当前借阅{len(response_dict['data']['loanlist']):02d}本。"
         )
         for book in response_dict["data"]["loanlist"]:
             nblib_user_list.append(
-                f"{book['returndate'][:10]} {book['title']} (宁波图书馆:{current_user_name})"
+                f"{book['returndate'][:10]} {book['title'][:16]} (宁波图书馆已续借{book['renewcount']}次:{current_user_name})"
             )
         # {"code":200,"data":{"..."},"desc":"操作成功"}
 
     else:
-        print(f"{current_user_name}({current_user_id})在宁波图书馆当前借阅0本。")
+        print(f"{current_user_id:010d}在宁波图书馆当前借阅00本。")
 
     return nblib_user_list
