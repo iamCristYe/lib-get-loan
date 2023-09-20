@@ -120,16 +120,16 @@ def get_nlic_loan_per_user(user_id, pwd, token):
 
     if "records" in response_dict["data"]:
         nlic_user_list.append(
-            f"鄞州图书馆({current_user_id:010d}):{len(response_dict['data']['records']):02d}本"
+            f"鄞州图书馆({str(current_user_id)[-4:]}):{len(response_dict['data']['records']):02d}本"
         )
         for book in response_dict["data"]["records"]:
             nlic_user_list.append(
-                f"{book['returndate'][:10]} {book['title'][:16]} (鄞州图书馆:{current_user_name})"
+                f"{book['returndate'][:10]} {book['title'][:16]} (鄞州图书馆已续借{book['loancount']}次:{current_user_name})"
             )
         # {"code":200,"data":{"..."},"desc":"操作成功"}
 
     else:
         # print(f"{current_user_id:010d}在鄞州图书馆当前借阅00本。")
-        nlic_user_list.append(f"鄞州图书馆({current_user_id:010d}):无借阅")
+        nlic_user_list.append(f"鄞州图书馆({str(current_user_id)[-4:]}):无借阅")
 
     return nlic_user_list
