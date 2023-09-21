@@ -28,12 +28,21 @@ def main():
     users = []
     for user_dict in nblib_loan_dict["users"]:
         for num, count in user_dict.items():
-            users.append(f"{num}(甬):{count}本")
+            users.append(f"{num}(甬): {count}本")
     for user_dict in nlic_loan_dict["users"]:
         for num, count in user_dict.items():
-            users.append(f"{num}(鄞):{count}本")
+            users.append(f"{num}(鄞): {count}本")
 
-    books = []
+    dates = set()
+    for book_dict in nblib_loan_dict["books"]:
+        return_date = book_dict["returndate"][:10]
+        dates.add(return_date)
+    for book_dict in nlic_loan_dict["books"]:
+        return_date = book_dict["returndate"][:10]
+        dates.add(return_date)
+    dates = sorted(list(dates), reverse=True)
+
+    dates_books = {date: [] for date in dates}
     for book_dict in nblib_loan_dict["books"]:
         book_title = book_dict["title"]
         return_date = book_dict["returndate"][:10]
@@ -41,9 +50,11 @@ def main():
             book_title = book_title[:3] + "…" + book_title[-3:]
         user_name_last_char = book_dict["user_name"][-1]
         if book_dict["renewable"]:
-            books.append(f"{return_date} {book_title} (甬-{user_name_last_char}-可续借)")
+            dates_books[return_date].append(
+                f"{book_title} (甬可续借-{user_name_last_char})"
+            )
         else:
-            books.append(f"{return_date} {book_title} (甬-{user_name_last_char})")
+            dates_books[return_date].append(f"{book_title} (甬❌-{user_name_last_char})")
     for book_dict in nlic_loan_dict["books"]:
         book_title = book_dict["title"]
         return_date = book_dict["returndate"][:10]
@@ -51,28 +62,19 @@ def main():
             book_title = book_title[:3] + "…" + book_title[-3:]
         user_name_last_char = book_dict["user_name"][-1]
         if book_dict["renewable"]:
-            books.append(f"{return_date} {book_title} (鄞-{user_name_last_char}-可续借)")
+            dates_books[return_date].append(
+                f"{book_title} (鄞可续借-{user_name_last_char})"
+            )
         else:
-            books.append(f"{return_date} {book_title} (鄞-{user_name_last_char})")
-
-    from collections import Counter
-
-    dates = []
-    for book_dict in nblib_loan_dict["books"]:
-        return_date = book_dict["returndate"][:10]
-        dates.append(return_date)
-    for book_dict in nlic_loan_dict["books"]:
-        return_date = book_dict["returndate"][:10]
-        dates.append(return_date)
-    dates = Counter(dates)
+            dates_books[return_date].append(f"{book_title} (鄞❌-{user_name_last_char})")
 
     return_string = ""
     for user in sorted(users, reverse=True):
         return_string += f"\n{user}"
-    for book in sorted(books, reverse=True):
-        return_string += f"\n{book}"
-    for date in sorted(dates, reverse=True):
-        return_string += f"\n{date}:{dates[date]}本"
+    for date in dates:
+        return_string += f"\n{date}: {len(dates_books[date])}本"
+        for book in dates_books[date]:
+            return_string += f"\n{book}"
 
     print(return_string)
     return return_string
