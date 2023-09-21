@@ -45,13 +45,18 @@ def get_nblib_loan(user_id_list, pwd):
         log.write(str(response_dict) + "\n")
     current_access_token = response_dict["data"]["token"]
 
-    nblib_list = []
+    nblib_dict = {"users": [], "books": []}
 
     for user_id in user_id_list:
         time.sleep(random.randint(3, 10))
-        nblib_list += get_nblib_loan_per_user(user_id, pwd, current_access_token)
 
-    return nblib_list
+        nblib_user_dict = get_nblib_loan_per_user(user_id, pwd, current_access_token)
+        for user in nblib_user_dict["users"]:
+            nblib_dict["users"].append(user)
+        for book in nblib_user_dict["books"]:
+            nblib_dict["books"].append(book)
+
+    return nblib_dict
 
 
 def get_nblib_loan_per_user(user_id, pwd, current_access_token):
@@ -162,20 +167,24 @@ def get_nblib_loan_per_user(user_id, pwd, current_access_token):
     with open("log.txt", "a") as log:
         log.write(str(response_dict) + "\n")
 
-    nblib_user_list = []
+    nblib_return_dict = {"users": [], "books": []}
 
     if "loanlist" in response_dict["data"]:
-        nblib_user_list.append(
-            f"宁波图书馆({str(current_user_id)[-4:]}):{len(response_dict['data']['loanlist']):02d}本"
+        nblib_return_dict["users"].append(
+            {str(current_user_id)[-4:]: len(response_dict["data"]["loanlist"])}
         )
         for book in response_dict["data"]["loanlist"]:
-            nblib_user_list.append(
-                f"{book['returndate'][:10]} {book['title'][:16]} (宁波图书馆已续借{book['renewcount']}次:{current_user_name})"
+            renewable = False if book["renewcount"] > 0 else True
+            nblib_return_dict["books"].append(
+                {
+                    "title": book["title"],
+                    "returndate": book["returndate"],
+                    "renewable": renewable,
+                    "user_name": current_user_name,
+                }
             )
-        # {"code":200,"data":{"..."},"desc":"操作成功"}
 
     else:
-        # print(f"{current_user_id:010d}在宁波图书馆当前借阅00本。")
-        nblib_user_list.append(f"宁波图书馆({str(current_user_id)[-4:]}):无借阅")
+        nblib_return_dict["users"].append({str(current_user_id)[-4:]: 0})
 
-    return nblib_user_list
+    return nblib_return_dict

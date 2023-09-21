@@ -4,13 +4,18 @@ import requests
 
 
 def get_nlic_loan(user_id_list, pwd, token_list):
-    nlic_list = []
+    nlic_dict = {"users": [], "books": []}
 
     for i in range(len(user_id_list)):
         time.sleep(random.randint(3, 10))
-        nlic_list += get_nlic_loan_per_user(user_id_list[i], pwd, token_list[i])
 
-    return nlic_list
+        nlic_user_dict = get_nlic_loan_per_user(user_id_list[i], pwd, token_list[i])
+        for user in nlic_user_dict["users"]:
+            nlic_dict["users"].append(user)
+        for book in nlic_user_dict["books"]:
+            nlic_dict["books"].append(book)
+
+    return nlic_dict
 
 
 def get_nlic_loan_per_user(user_id, pwd, token):
@@ -116,20 +121,29 @@ def get_nlic_loan_per_user(user_id, pwd, token):
     with open("log.txt", "a") as log:
         log.write(str(response_dict) + "\n")
 
-    nlic_user_list = []
+    nlic_return_dict = {"users": [], "books": []}
 
     if "records" in response_dict["data"]:
-        nlic_user_list.append(
-            f"鄞州图书馆({str(current_user_id)[-4:]}):{len(response_dict['data']['records']):02d}本"
+        nlic_return_dict["users"].append(
+            {str(current_user_id)[-4:]: len(response_dict["data"]["records"])}
         )
+
         for book in response_dict["data"]["records"]:
-            nlic_user_list.append(
-                f"{book['returndate'][:10]} {book['title'][:16]} (鄞州图书馆已续借{book['loancount']}次:{current_user_name})"
+            renewable = (
+                False
+                if book["loancount"] > 0 or book["barcode"].startswith("JG")
+                else True
             )
-        # {"code":200,"data":{"..."},"desc":"操作成功"}
 
+            nlic_return_dict["books"].append(
+                {
+                    "title": book["title"],
+                    "returndate": book["returndate"],
+                    "renewable": renewable,
+                    "user_name": current_user_name,
+                }
+            )
     else:
-        # print(f"{current_user_id:010d}在鄞州图书馆当前借阅00本。")
-        nlic_user_list.append(f"鄞州图书馆({str(current_user_id)[-4:]}):无借阅")
+        nlic_return_dict["users"].append({str(current_user_id)[-4:]: 0})
 
-    return nlic_user_list
+    return nlic_return_dict
