@@ -32,7 +32,7 @@ def index():
     bot.set_webhook(
         url=f"https://active-loans-bot.azurewebsites.net/{TELEGRAM_BOT_KEY}"
     )
-    bot.send_message(-1001982849593, main())  # Channel
+    # bot.send_message(-1001982849593, main())  # Channel
     return "<HTML><HEAD><TITLE>Success</TITLE></HEAD><BODY>Success</BODY></HTML>"
 
 

@@ -112,7 +112,7 @@ def get_nlic_loan_per_user(user_id, pwd, token):
     )
 
     response_dict = response.json()
-    # print(response_dict["data"])
+    print(response_dict)
     with open("log.txt", "a") as log:
         log.write(str(response_dict) + "\n")
 
