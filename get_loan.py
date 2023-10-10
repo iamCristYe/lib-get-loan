@@ -19,7 +19,7 @@ from nblib import get_nblib_loan
 from nlic import get_nlic_loan
 
 
-def main():
+def get_loan():
     nblib_loan_dict = get_nblib_loan(nb_user_id, nb_password)
     nlic_loan_dict = get_nlic_loan(nlic_user_id, nlic_password, nlic_user_token)
 
@@ -46,8 +46,8 @@ def main():
     for book_dict in nblib_loan_dict["books"]:
         book_title = book_dict["title"]
         return_date = book_dict["returndate"][:10]
-        if len(book_title) > 6:
-            book_title = book_title[:5] + "…"
+        if len(book_title) > 8:
+            book_title = book_title[:7] + "…"
         user_name_last_char = book_dict["user_name"][-1]
         if book_dict["renewable"]:
             dates_books[return_date].append(f"甬{user_name_last_char}|{book_title}")
@@ -56,8 +56,8 @@ def main():
     for book_dict in nlic_loan_dict["books"]:
         book_title = book_dict["title"]
         return_date = book_dict["returndate"][:10]
-        if len(book_title) > 6:
-            book_title = book_title[:5] + "…"
+        if len(book_title) > 8:
+            book_title = book_title[:7] + "…"
         user_name_last_char = book_dict["user_name"][-1]
         if book_dict["renewable"]:
             dates_books[return_date].append(f"鄞{user_name_last_char}|{book_title}")
@@ -72,6 +72,7 @@ def main():
         return_string += f"\n{date}: {len(dates_books[date])}本"
         for book in dates_books[date]:
             return_string += f"\n{book}"
+        return_string += f"\n"
 
     print(return_string)
     return return_string
