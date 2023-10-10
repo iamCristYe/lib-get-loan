@@ -46,31 +46,28 @@ def main():
     for book_dict in nblib_loan_dict["books"]:
         book_title = book_dict["title"]
         return_date = book_dict["returndate"][:10]
-        if len(book_title) > 7:
-            book_title = book_title[:3] + "…" + book_title[-3:]
+        if len(book_title) > 6:
+            book_title = book_title[:5] + "…"
         user_name_last_char = book_dict["user_name"][-1]
         if book_dict["renewable"]:
-            dates_books[return_date].append(
-                f"{book_title} (甬可续借-{user_name_last_char})"
-            )
+            dates_books[return_date].append(f"甬{user_name_last_char}|{book_title}")
         else:
-            dates_books[return_date].append(f"{book_title} (甬❌-{user_name_last_char})")
+            dates_books[return_date].append(f"甬{user_name_last_char}|{book_title}⚠️")
     for book_dict in nlic_loan_dict["books"]:
         book_title = book_dict["title"]
         return_date = book_dict["returndate"][:10]
-        if len(book_title) > 7:
-            book_title = book_title[:3] + "…" + book_title[-3:]
+        if len(book_title) > 6:
+            book_title = book_title[:5] + "…"
         user_name_last_char = book_dict["user_name"][-1]
         if book_dict["renewable"]:
-            dates_books[return_date].append(
-                f"{book_title} (鄞可续借-{user_name_last_char})"
-            )
+            dates_books[return_date].append(f"鄞{user_name_last_char}|{book_title}")
         else:
-            dates_books[return_date].append(f"{book_title} (鄞❌-{user_name_last_char})")
+            dates_books[return_date].append(f"鄞{user_name_last_char}|{book_title}⚠️")
 
     return_string = ""
     for user in sorted(users, reverse=True):
         return_string += f"\n{user}"
+    return_string += f"\n"
     for date in dates:
         return_string += f"\n{date}: {len(dates_books[date])}本"
         for book in dates_books[date]:
