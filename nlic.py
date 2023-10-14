@@ -7,7 +7,7 @@ def get_nlic_loan(user_id_list, pwd, token_list):
     nlic_dict = {"users": [], "books": []}
 
     for i in range(len(user_id_list)):
-        time.sleep(random.randint(3, 10))
+        time.sleep(random.randint(1, 3))
 
         nlic_user_dict = get_nlic_loan_per_user(user_id_list[i], pwd, token_list[i])
         for user in nlic_user_dict["users"]:

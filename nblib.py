@@ -48,7 +48,7 @@ def get_nblib_loan(user_id_list, pwd):
     nblib_dict = {"users": [], "books": []}
 
     for user_id in user_id_list:
-        time.sleep(random.randint(3, 10))
+        time.sleep(random.randint(1, 3))
 
         nblib_user_dict = get_nblib_loan_per_user(user_id, pwd, current_access_token)
         for user in nblib_user_dict["users"]:
@@ -95,7 +95,7 @@ def get_nblib_loan_per_user(user_id, pwd, current_access_token):
         "password": f"{pwd}",
         "orgId": "623217618121138176",
         "captchaCode": None,
-        "captchaKey": "1c38071c-fb61-4f84-8663-46648cd3c00a",
+        "captchaKey": "eb7b5a42-722c-413c-907d-320c174e5c75",
     }
 
     response = requests.post(
