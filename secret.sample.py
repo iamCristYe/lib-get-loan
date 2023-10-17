@@ -9,3 +9,5 @@ nlic_user_token = [
     "encoded",
     "encoded",
 ]
+
+bot_token = "num:string"

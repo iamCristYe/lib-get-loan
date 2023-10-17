@@ -3,7 +3,12 @@ import flask
 import telebot
 from get_loan import get_loan
 
-TELEGRAM_BOT_KEY = os.environ.get("telegram_bot_key")
+
+if os.path.exists("secret.py"):
+    from secret import bot_token
+else:
+    bot_token = os.environ.get("telegram_bot_key")
+TELEGRAM_BOT_KEY = bot_token
 app = flask.Flask(__name__)
 bot = telebot.TeleBot(TELEGRAM_BOT_KEY)
 
