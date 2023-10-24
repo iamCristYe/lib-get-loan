@@ -13,7 +13,7 @@ app = flask.Flask(__name__)
 bot = telebot.TeleBot(TELEGRAM_BOT_KEY)
 
 @app.route(f"/wake-up")
-def main():
+def wake():
     bot.remove_webhook()
     return "<html><script>window.close()</script></html>"
 
