@@ -48,7 +48,7 @@ def get_nblib_loan(user_id_list, pwd):
     nblib_dict = {"users": [], "books": []}
 
     for user_id in user_id_list:
-        time.sleep(random.randint(1, 3))
+        # time.sleep(random.randint(1, 3))
 
         nblib_user_dict = get_nblib_loan_per_user(user_id, pwd, current_access_token)
         for user in nblib_user_dict["users"]:
