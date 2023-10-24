@@ -21,7 +21,7 @@ def wake():
 def main():
     bot.send_message(
         -1001982849593,
-        f"`{get_loan()}`\n[更新](https://active-loans-bot.azurewebsites.net/{TELEGRAM_BOT_KEY})",
+        f"`{get_loan()}`[更新](https://active-loans-bot.azurewebsites.net/{TELEGRAM_BOT_KEY})",
         "MarkdownV2",
     )
     return "<html><script>window.close()</script></html>"
