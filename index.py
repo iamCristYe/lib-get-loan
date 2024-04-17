@@ -1,8 +1,9 @@
 import os
 import flask
 import telebot
-from get_loan import get_loan
+from get_loan import get_loan, get_loan_nblib_str
 import hashlib
+
 
 if os.path.exists("secret.py"):
     from secret import bot_token
@@ -19,9 +20,14 @@ bot = telebot.TeleBot(TELEGRAM_BOT_KEY)
 def main():
     bot.send_message(
         -1001982849593,
+        f"`{get_loan_nblib_str()}`[更新](https://active-loans-bot.azurewebsites.net/{bot_token_md5})",
+        "MarkdownV2",
+    )
+    bot.send_message(
+        -1001982849593,
         f"`{get_loan()}`[更新](https://active-loans-bot.azurewebsites.net/{bot_token_md5})",
         "MarkdownV2",
-        disable_web_page_preview=True
+        disable_web_page_preview=True,
     )
     return "<html><script>window.close()</script></html>"
 
