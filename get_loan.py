@@ -18,12 +18,11 @@ else:
 from nblib import get_nblib_loan
 from nlic import get_nlic_loan
 
-nblib_loan_dict = get_nblib_loan(nb_user_id, nb_password)
-
 
 def get_loan_nblib_str():
 
     users = []
+    nblib_loan_dict = get_nblib_loan(nb_user_id, nb_password)
     for user_dict in nblib_loan_dict["users"]:
         for num, count in user_dict.items():
             users.append(f"{num}(甬): {count}本")
@@ -64,6 +63,7 @@ def get_loan_nblib_str():
 def get_loan():
 
     nlic_loan_dict = get_nlic_loan(nlic_user_id, nlic_password, nlic_user_token)
+    nblib_loan_dict = get_nblib_loan(nb_user_id, nb_password)
 
     print(nblib_loan_dict, nlic_loan_dict)
 
