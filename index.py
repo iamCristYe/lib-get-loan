@@ -22,6 +22,7 @@ def main():
         -1001982849593,
         f"`{get_loan_nblib_str()}`[更新](https://active-loans-bot.azurewebsites.net/{bot_token_md5})",
         "MarkdownV2",
+        disable_web_page_preview=True,
     )
     bot.send_message(
         -1001982849593,
