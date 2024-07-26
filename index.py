@@ -30,7 +30,7 @@ def main():
         "MarkdownV2",
         disable_web_page_preview=True,
     )
-    return "<html><script>window.close()</script></html>"
+    return "OK"
 
 
 @app.route("/<path:path>")
